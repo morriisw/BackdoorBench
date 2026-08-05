@@ -160,6 +160,29 @@ def generate_cls_model(
                 Resize((224, 224)),
                 net,
             )
+        elif model_name == 'vit_small':
+            from models.vit_variants import ViT_Small
+            net = ViT_Small(num_classes=num_classes)
+    elif model_name == 'deit_tiny':
+        from models.vit_variants import DeiT_Tiny
+        net = DeiT_Tiny(num_classes=num_classes)
+
+        # elif model_name in ['swin_tiny', 'convnext_tiny', 'deit_tiny']:
+        #     from torchvision.models import swin_t, convnext_tiny
+        #     from torchvision.transforms import Resize
+            
+        #     if model_name == 'swin_tiny':
+        #         # weights=None ensures we train from scratch (attacker's perspective)
+        #         net = swin_t(weights=None, num_classes=num_classes)
+        #     elif model_name == 'deit_tiny':
+        #         import timm
+        #         net = timm.create_model('deit_tiny_patch16_224', pretrained=False, num_classes=num_classes)
+        #     elif model_name == 'convnext_tiny':
+        #         net = convnext_tiny(weights=None, num_classes=num_classes)
+            
+        #     # These models must have 224x224, so we wrap them
+        #     net = torch.nn.Sequential(Resize((224, 224)), net)
+
     elif model_name == 'densenet121':
         net = models.densenet121(num_classes=num_classes, **kwargs)
     elif model_name == 'resnext29':
