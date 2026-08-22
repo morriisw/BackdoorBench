@@ -51,6 +51,9 @@ import torch
 sys.path = ["./"] + sys.path
 
 import numpy as np
+if not hasattr(np, "infty"):
+    np.infty = np.inf  # NumPy 2.0 removed np.infty; some framework utilities (e.g. plotting) still reference it
+
 from copy import deepcopy
 import torch.nn as nn
 from torch.utils.data import DataLoader
