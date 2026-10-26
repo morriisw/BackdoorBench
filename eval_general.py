@@ -72,7 +72,7 @@ def load_raw_test_dataset(dataset_name, data_root="./data"):
         return MNIST(root=f"{data_root}/mnist", train=False, transform=None, download=True)
     elif name == "gtsrb":
         from dataset.GTSRB import GTSRB
-        return GTSRB(root=f"{data_root}/gtsrb", train=False)
+        return GTSRB(data_root=f"{data_root}/gtsrb", train=False)
     elif name == "tiny":
         from dataset.Tiny import TinyImageNet
         return TinyImageNet(root=f"{data_root}/tiny", split='val', download=True)
@@ -96,7 +96,7 @@ def load_raw_dataset(dataset_name, split="test", data_root="./data"):
         return MNIST(root=f"{data_root}/mnist", train=is_train, transform=None, download=True)
     elif name == "gtsrb":
         from dataset.GTSRB import GTSRB
-        return GTSRB(root=f"{data_root}/gtsrb", train=is_train)
+        return GTSRB(data_root=f"{data_root}/gtsrb", train=is_train)
     elif name == "tiny":
         from dataset.Tiny import TinyImageNet
         return TinyImageNet(root=f"{data_root}/tiny",
@@ -342,6 +342,10 @@ if __name__ == "__main__":
                         help="Required when --attack inputaware: path to the saved netCGM.pt checkpoint")
     parser.add_argument("--batch_size", type=int, default=128)
     parser.add_argument("--num_workers", type=int, default=0)
+    parser.add_argument("--attack_trigger_img_path", default="./resource/blended/hello_kitty.jpeg")
+    parser.add_argument("--attack_train_blended_alpha", type=float, default=0.2)
+    parser.add_argument("--attack_test_blended_alpha", type=float, default=0.2)
+
     args = parser.parse_args()
 
     args.num_classes = get_num_classes(args.dataset)
