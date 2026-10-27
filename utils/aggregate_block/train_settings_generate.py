@@ -64,7 +64,8 @@ def argparser_opt_scheduler(model, args):
                                                     step_size=args.steplr_stepsize,  # 1
                                                     gamma=args.steplr_gamma)  # 0.92
     elif args.lr_scheduler == 'CosineAnnealingLR':
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=100 if (("cos_t_max" not in args.__dict__) or args.cos_t_max is None) else args.cos_t_max)
+        T = args.cos_t_max if ("cos_t_max" in args.__dict__ and args.cos_t_max is not None) else args.epochs
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=T)
     elif args.lr_scheduler == 'MultiStepLR':
         scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, args.steplr_milestones ,args.steplr_gamma)
     elif args.lr_scheduler == 'ReduceLROnPlateau':
