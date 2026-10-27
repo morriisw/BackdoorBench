@@ -2,13 +2,6 @@
 DeiT-Tiny training on the InputAware dynamic backdoor, with hard-label
 teacher distillation. Mirrors deit.py's BadNet integration exactly, just
 inheriting from InputAware instead of BadNet.
-
-Only train_step is overridden. InputAware's stage1 data prep and
-stage2_training (mask pretraining, netG/netC/netM setup, the main epoch
-loop, and result saving) are reused completely unchanged: stage2_training
-calls self.train_step(...) and self.eval_step(...), so Python's normal
-method resolution automatically dispatches to this subclass's train_step
-without needing to duplicate any of that logic.
 """
 import sys
 sys.path = ["./"] + sys.path
@@ -22,12 +15,13 @@ import logging
 import torch
 import torch.nn as nn
 
-from attack.inputaware import InputAware, generalize_to_lower_pratio
+from attack.inputaware import generalize_to_lower_pratio
+from attack.inputaware_savebest import InputAwareSaveBest
 from utils.aggregate_block.model_trainer_generate import generate_cls_model
 from utils.trainer_cls import all_acc
 
 
-class DeiTInputAware(InputAware):
+class DeiTInputAware(InputAwareSaveBest):
 
     def set_args(self, parser):
         parser = super().set_args(parser)
